@@ -25,4 +25,15 @@ struct MVVMDemoTests {
         #expect(viewModel.errorMessage == "Please enter email")
     }
 
+    @Test func checkValidLoginInput() {
+        
+        let viewModel = LoginViewModel()
+        
+        viewModel.email = "test@gmail.com"
+        viewModel.password = "123456"
+        
+        let result = viewModel.validateLogin()
+        
+        #expect(result == false)
+    }
 }
