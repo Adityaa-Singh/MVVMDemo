@@ -1,44 +1,23 @@
-name: iOS starter workflow
+name: ios-ci
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
-    name: Build and Run Unit Tests
+  unit-tests:
+    name: unit-tests
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set Scheme
-        run: echo "MVVMDemo" > default
-
-      - name: Build
-        env:
-          scheme: ${{ 'default' }}
+      - name: Build and Test
         run: |
           device=$(xcrun simctl list devices available | grep "iPhone" | head -1 | awk -F '(' '{print $1}' | xargs)
-          scheme=$(cat default)
 
-          xcodebuild build-for-testing \
+          xcodebuild test \
             -project MVVMDemo.xcodeproj \
-            -scheme "$scheme" \
+            -scheme MVVMDemo \
             -destination "platform=iOS Simulator,name=$device"
-
-      - name: Test
-        env:
-          scheme: ${{ 'default' }}
-        run: |
-          device=$(xcrun simctl list devices available | grep "iPhone" | head -1 | awk -F '(' '{print $1}' | xargs)
-          scheme=$(cat default)
-
-          xcodebuild test-without-building \
-            -project MVVMDemo.xcodeproj \
-            -scheme "$scheme" \
-            -destination "platform=iOS Simulator,name=$device" \
-            -only-testing:MVVMDemoTests
