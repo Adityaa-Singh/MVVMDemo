@@ -36,4 +36,15 @@ struct MVVMDemoTests {
         
         #expect(result == true)
     }
+    
+    func checkShortPassword() {
+        let viewModel = LoginViewModel()
+        
+        viewModel.email = "test@gmail.com"
+        viewModel.password = "123"
+        
+        let result = viewModel.validateLogin()
+        
+        #expect(result == true)
+    }
 }
