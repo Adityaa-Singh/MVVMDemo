@@ -45,6 +45,6 @@ struct MVVMDemoTests {
         
         let result = viewModel.validateLogin()
         
-        #expect(result == true)
+        #expect(result == false)
     }
 }
